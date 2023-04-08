@@ -1,21 +1,34 @@
+use cmder::Status;
+use colored::Colorize;
 use std::process::exit;
 
+mod cliper;
 mod cmder;
 mod gpt;
-mod cliper;
 
 fn main() {
     let result = match cmder::run_diff() {
-        Ok(info) => gpt::summarize(info),
-        Err(msg) => panic!("{msg}")
+        Ok(diff) => gpt::summarize(diff),
+        Err(msg) => {
+            println!("fatal: {}", msg.red());
+            exit(1)
+        }
     };
 
-    println!("Your commit would be:\n\n{}\n\nCommit? Y(Yes)/C(Copy)/N(No):", result);
-    let commit = format!("git commit -m \"{result}\"");
+    print!(
+        "Your commit would be:\n\n{}\n\n{}",
+        result,
+        "Commit? Y(Yes)/C(Copy)/N(No):".blue()
+    );
     match cmder::check_input() {
-        cmder::Status::Yes => {},
-        cmder::Status::Copy => cliper::clip(commit),
-        cmder::Status::No => {exit(0)}
+        Status::Yes => {
+            println!("{}", cmder::run_add_commit(result));
+        }
+        Status::Copy => {
+            let commit = format!("git add .;git commit -m \"{result}\"");
+            cliper::clip(commit);
+            println!("{}", "Commit message has been copied to your clipboard.".green());
+        }
+        Status::No => exit(0),
     }
-
 }
