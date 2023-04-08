@@ -1,3 +1,4 @@
+use std::env;
 use std::io;
 use std::io::Write;
 use std::process::Command;
@@ -64,4 +65,19 @@ pub fn check_input() -> Status {
         }
     }
     flag
+}
+
+pub fn check_args() -> Option<String> {
+    let mut args = env::args();
+    args.next();
+    match args.next() {
+        Some(arg) => {
+            if let Some(key) = arg.split('=').last() {
+                return Some(String::from(key));
+            } else {
+                return None;
+            }
+        }
+        None => None,
+    }
 }
