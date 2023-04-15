@@ -15,7 +15,7 @@ fn main() {
                 println!(
                     "{}\n{}",
                     "API key saved successfully.".green(),
-                    "We assure that your key would only be stored in your own device."
+                    "Your key would only be stored in your own device."
                 );
                 exit(0)
             }
@@ -41,7 +41,13 @@ fn main() {
 
     // run `git diff`
     let result = match cmder::run_diff() {
-        Ok(diff) => gpt::summarize(&key, diff),
+        Ok(diff) => match gpt::summarize(&key, diff) {
+            Ok(result) => result,
+            Err(msg) => {
+                println!("faltal: {}", msg);
+                exit(1)
+            }
+        }
         Err(msg) => {
             println!("fatal: {}", msg.red());
             exit(1)

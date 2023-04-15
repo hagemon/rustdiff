@@ -27,7 +27,6 @@ pub fn read_config() -> Result<String, String> {
     };
     let config: Config = toml::from_str(&file_str).unwrap();
     if let Some(key) = config.key {
-        println!("{}", key);
         Ok(key)
     } else {
         Err(String::from("key not exists"))
