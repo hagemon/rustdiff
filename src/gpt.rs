@@ -42,7 +42,7 @@ pub fn summarize(key: &str, info: String) -> Result<String, Box<dyn std::error::
         .header("Authorization", format!("Bearer {}", key))
         .json(&data);
     let resp = req.send()?;
-    let resp_json: GPTResp = resp.json()?;
+    let resp_json: GPTResp = resp.json().expect("Network error, please check your network or API KEY.");
     let content = resp_json.choices.get(0).expect("Network error").message["content"].clone();
     Ok(content)
 }

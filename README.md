@@ -4,14 +4,17 @@ Based on the power of ChatGPT, `rustdiff` summarize your `git diff` outputs into
 
 ![screenshots](screenshots.png)
 
-# Installation
+A project for fun :)
 
-## Cargo
+# Build
 
-## Mannual
+Clone this repo and run
 
-1. Foward to [release page]() to download executable file.
-2. Add executable file to your environment variables.
+`cargo build --release`
+
+then add executable program to your PATH, or use `alias` in bashrc.
+
+Sorry for the temporarily absent of cross-platform compilation. I am working on it :)
 
 # Usage
 
@@ -33,3 +36,4 @@ Choose `Y(Yes)` to commit, or `C(Copy)` to copy commmit command, or `N(No)` to e
 
 - Support editing mode.
 - Remind token costs before summarizing.
+- Build releases.
